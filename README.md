@@ -168,7 +168,8 @@ cd tranche-strategy && pnpm test                  # 59 unit tests
 ```
 
 On `/mantle` (MetaMask → Mantle Sepolia): **Connect → Faucet → Get approved (KYC) → Deposit → Redeem.**
-See [`DEMO.md`](./DEMO.md) for a full walkthrough.
+To see senior protection under a loss, run the breach demo:
+`cd tranche-strategy && pnpm tsx scripts/breach-demo.ts --vault mETH`.
 
 ## Public deployment
 
