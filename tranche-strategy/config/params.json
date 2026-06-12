@@ -1,0 +1,22 @@
+{
+  "note": "Starting parameters (tranche-design.md §9/§10). SHAPE is sound; magnitudes want tuning on real fee/IL/funding data. Do NOT quote these as a safety guarantee.",
+  "network": "testnet",
+  "thresholdT": 0.06,
+  "coin": "SOL",
+  "dex": "main",
+  "caps": {
+    "hMax": 1.0,
+    "couponMaxAbs": 0.12,
+    "couponFloor": 0.02,
+    "protectionMaxPct": 0.8,
+    "protectionMaxAbs": 0.35
+  },
+  "yield": {
+    "lpFeeApr": 0.06,
+    "hedgeCostApr": 0.03
+  },
+  "rangePreset": {
+    "widthPct": 0.15,
+    "comment": "±15% band around entry, mirrors the sim range [0.85, 1.15]·P0"
+  }
+}

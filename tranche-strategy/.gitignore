@@ -1,0 +1,7 @@
+node_modules/
+config/state.json
+config/replay.json
+config/decision-log.jsonl
+*.tmp
+.DS_Store
+dist/

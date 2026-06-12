@@ -1,0 +1,45 @@
+{
+  "name": "tranche-strategy",
+  "version": "0.1.0",
+  "private": true,
+  "description": "OpenClaw skill: tranches a SOL/USDC CLMM LP into a delta-neutral senior sleeve + levered junior sleeve, hedged on Hyperliquid perps, logged on Mantle.",
+  "license": "MIT",
+  "type": "module",
+  "exports": {
+    "./lib": {
+      "types": "./dist/lib/index.d.ts",
+      "default": "./dist/lib/index.js"
+    },
+    "./adapters/*": {
+      "types": "./dist/adapters/*.d.ts",
+      "default": "./dist/adapters/*.js"
+    },
+    "./state/*": {
+      "types": "./dist/state/*.d.ts",
+      "default": "./dist/state/*.js"
+    }
+  },
+  "scripts": {
+    "build": "tsc -p tsconfig.build.json",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "typecheck": "tsc --noEmit",
+    "replay": "tsx sim/replay.ts",
+    "compute-delta": "tsx scripts/compute-delta.ts",
+    "size-hedge": "tsx scripts/size-hedge.ts",
+    "rebalance": "tsx scripts/rebalance.ts",
+    "agent-loop": "tsx scripts/agent-loop.ts",
+    "accounting": "tsx scripts/accounting.ts",
+    "log-decision": "tsx scripts/log-decision.ts"
+  },
+  "dependencies": {
+    "decimal.js": "^10.4.3",
+    "viem": "^2.52.2"
+  },
+  "devDependencies": {
+    "@types/node": "^25.9.2",
+    "tsx": "^4.19.2",
+    "typescript": "^5.7.2",
+    "vitest": "^2.1.8"
+  }
+}

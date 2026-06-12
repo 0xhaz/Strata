@@ -1,0 +1,35 @@
+{
+  "network": "mantle-sepolia",
+  "chainId": 5003,
+  "rpc": "https://rpc.sepolia.mantle.xyz",
+  "explorer": "https://sepolia.mantlescan.xyz",
+  "agentAuthority": "0x0E128580d848fB51849ab6564467A9BA79B4820c",
+  "vaults": {
+    "mETH": {
+      "symbol": "mETH",
+      "decimals": 18,
+      "couponBps": 287,
+      "maxSettleBps": 2000,
+      "settler": "0x0E128580d848fB51849ab6564467A9BA79B4820c",
+      "strategy": "Delta-neutral mETH — earn the staking yield, hedge the ETH price on Hyperliquid (Ethena-style).",
+      "TrancheVault": "0x7dF879Ff39AC3bAC696A38Da05aa19b51f9D1818",
+      "asset": "0x83130374d16D5d1d95dB1ABE38cebF3F61c88329",
+      "DecisionLog": "0x0f64Cb12512667BBcFDE913048fA68051e632abE",
+      "seniorToken": "0xeDA923bA147e6CDE088399De10B2152AeB51e2c2",
+      "juniorToken": "0x42935Cd68ceCff9cC6De318C3E303464B808648E"
+    },
+    "USDY": {
+      "symbol": "USDY",
+      "decimals": 18,
+      "couponBps": 450,
+      "maxSettleBps": 2000,
+      "settler": "0x0E128580d848fB51849ab6564467A9BA79B4820c",
+      "strategy": "Tranched tokenized-treasury yield — senior gets a protected fixed yield, junior takes the levered residual.",
+      "TrancheVault": "0x5BD8C01c04fbceB769B82b13d6A879a1081f75d1",
+      "asset": "0x9d3824f42dFF56D530Bfedd849c21CCc5b7128f5",
+      "DecisionLog": "0xE71600e749bB899E7768ddfc962B70663dF3c9E0",
+      "seniorToken": "0xeDdAC58af69925A8C78c1b7C75568b3b6C7153a6",
+      "juniorToken": "0xea25aC784F269b63791840ff61Cb66Eb554D3b97"
+    }
+  }
+}

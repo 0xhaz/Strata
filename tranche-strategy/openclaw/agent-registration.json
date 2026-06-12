@@ -1,0 +1,32 @@
+{
+  "$schema": "https://eips.ethereum.org/assets/eip-8004/agent-registration.schema.json",
+  "name": "Tranche Agent",
+  "description": "Autonomous agent that tranches a single user's SOL/USDC CLMM LP into a delta-neutral fixed-coupon senior sleeve and a levered-residual junior sleeve, hedged on Hyperliquid perps, with every rebalance decision logged on-chain.",
+  "version": "0.1.0",
+  "image": "ipfs://<unset>",
+  "external_url": "https://github.com/<unset>/tranche-strategy",
+  "capabilities": [
+    "defi.tranche.senior-junior",
+    "defi.clmm.delta-hedge",
+    "perps.funding-aware-sizing",
+    "logging.on-chain-decision-journal"
+  ],
+  "skills": ["tranche-strategy"],
+  "composes": ["byreal-cli", "byreal-perps-cli", "agent-token"],
+  "venues": {
+    "yield": "Solana (Byreal CLMM)",
+    "hedge": "Hyperliquid (Byreal Perps)",
+    "log": "Mantle"
+  },
+  "endpoints": {
+    "decisionLog": "<unset — Mantle DecisionLog contract address>",
+    "registration": "ipfs://<unset>"
+  },
+  "policy": {
+    "network": "testnet",
+    "singleUserCapitalOnly": true,
+    "neverPoolsDeposits": true,
+    "neverSignsLocally": true
+  },
+  "note": "Identity NFT + this registration file are minted once the Mantle ERC-8004 Identity Registry address is provided via hackathon onboarding. Fields marked <unset> are filled at mint time."
+}

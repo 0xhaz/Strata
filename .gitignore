@@ -1,0 +1,53 @@
+# ── Secrets — NEVER commit ──
+.env
+**/.env
+**/.env.*
+!**/.env.example
+
+# ── Dependencies ──
+node_modules/
+**/node_modules/
+
+# ── Build output / caches ──
+.next/
+**/.next/
+**/dist/
+**/out/
+**/.turbo/
+**/*.tsbuildinfo
+
+# ── Foundry (mantle-vault) — restore deps with `forge install` ──
+mantle-vault/cache/
+mantle-vault/out/
+mantle-vault/broadcast/
+mantle-vault/lib/
+
+# ── Anchor / Rust (tranche-vault) ──
+tranche-vault/target/
+tranche-vault/.anchor/
+tranche-vault/test-ledger/
+**/*.rs.bk
+
+# ── Generated agent state / run artifacts ──
+tranche-strategy/config/state.json
+tranche-strategy/config/replay.json
+tranche-strategy/config/live.json
+tranche-strategy/config/decision-log.jsonl
+tranche-strategy/logs/
+
+# ── OS / editor ──
+.DS_Store
+**/.DS_Store
+*.log
+
+# ── Internal planning / design docs (not for the public submission repo) ──
+CLAUDE.md
+architecture.md
+tranche-design.md
+techstacks.md
+workplan.md
+SUBMISSION.md
+hc_curve.py
+rebalance_sim.py
+DEMO.md
+VIDEO-SCRIPT.md
