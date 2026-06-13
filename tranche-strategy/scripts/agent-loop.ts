@@ -20,6 +20,7 @@
  *   --ticks 0  → run forever (Ctrl+C to stop); watch it live at the web /live page.
  */
 import { writeFile, mkdir } from "node:fs/promises";
+import { readFileSync } from "node:fs";
 import { dirname } from "node:path";
 import { parseArgs, num } from "./io.js";
 import { readState, writeState } from "../state/store.js";
@@ -39,6 +40,15 @@ const intervalSec = num(argv.flags, "interval", 15);
 const sleep = (ms: number) => new Promise((r) => setTimeout(r, ms));
 
 const LIVE_PATH = new URL("../config/live.json", import.meta.url).pathname;
+
+// Load tranche-strategy/.env (KEY=VALUE) into process.env if present — tsx doesn't auto-load it.
+try {
+  const env = readFileSync(new URL("../.env", import.meta.url), "utf8");
+  for (const line of env.split("\n")) {
+    const m = line.match(/^\s*([A-Za-z_][A-Za-z0-9_]*)\s*=\s*(.*?)\s*$/);
+    if (m && !process.env[m[1]]) process.env[m[1]] = m[2].replace(/^["']|["']$/g, "");
+  }
+} catch { /* no .env — use the real environment */ }
 
 // Optional: push the feed to a deployed web app (Vercel) so its /live page streams too.
 // Set LIVE_FEED_URL (e.g. https://strata-web-delta.vercel.app) + LIVE_INGEST_TOKEN.
