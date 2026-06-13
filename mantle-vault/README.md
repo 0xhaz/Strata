@@ -71,6 +71,49 @@ This is the senior/junior structured-credit mechanism, enforced on-chain. See it
 
 ---
 
+## Tranche economics
+
+Senior and junior are **tightly coupled**. Every `settle()` applies a waterfall, in order:
+
+1. **Junior pays senior's coupon.** Senior earns `couponBps × seniorAssets × time`, deducted from
+   junior: `juniorNew = juniorAssets + pnl − coupon`, `seniorAssets += coupon`. Even in a flat
+   market, junior slowly bleeds into senior — that's how senior earns its "fixed" return.
+2. **Junior absorbs losses first.** Negative PnL hits junior; senior is untouched **until junior is
+   wiped**, then senior absorbs only the remainder (breach).
+3. **Junior keeps the levered upside.** Positive PnL, after the coupon, all accrues to junior.
+
+So junior = funds senior's coupon **+** takes first loss **+** keeps the residual.
+
+### The size ratio is the risk dial
+`seniorAssets : juniorAssets` drives the whole economy, two ways:
+
+- **Junior leverage** = `TVL / juniorAssets`. Seed split senior 6 / junior 4 → ~**2.5×**: a 1% move
+  in strategy PnL moves junior NAV ~2.5%.
+- **Coupon burden** scales with `seniorAssets`. A large senior's coupon can eat a small junior's
+  buffer *even with zero market loss* (if `coupon > juniorAssets`, it breaches on its own).
+
+| Configuration | Junior leverage | Coupon drag | Behavior |
+|---|---|---|---|
+| **Small senior, large junior** | low | small | Conservative — fat cushion, losses diluted, junior rarely wipes, **clean recovery** |
+| **Large senior, small junior** | high | heavy | Aggressive — small loss wipes junior, coupon can breach on its own, risk of **permanent senior loss** |
+
+### Recovery is only clean *inside* the junior buffer
+- **Before breach** — fully recoverable. Losses sit in junior; positive settles rebuild junior NAV;
+  senior is flat throughout.
+- **After a true breach** (junior wiped **and** senior absorbed a loss) — **senior's loss is
+  permanent.** No `settle()` path adds back to senior (positive PnL always routes to junior), so
+  junior over-recovers while senior stays impaired. The only reset is redeploying the vault.
+
+→ Keeping junior large enough relative to senior + the coupon is what guarantees recoverability.
+
+### Solvency always holds
+Whatever the split, `asset.balanceOf(vault) == seniorAssets + juniorAssets` at all times — every PnL
+is moved as real RWA (in if positive, out if negative). The tranches only **redistribute** value
+between each other; the vault is never under-collateralized. "Recovery" means junior NAV climbing
+back, not the vault refilling from nowhere.
+
+---
+
 ## Trust-minimization
 
 Because the vault settles an off-chain AI's numbers, it **bounds what that agent can do**:
