@@ -40,6 +40,23 @@ const sleep = (ms: number) => new Promise((r) => setTimeout(r, ms));
 
 const LIVE_PATH = new URL("../config/live.json", import.meta.url).pathname;
 
+// Optional: push the feed to a deployed web app (Vercel) so its /live page streams too.
+// Set LIVE_FEED_URL (e.g. https://strata-web-delta.vercel.app) + LIVE_INGEST_TOKEN.
+const FEED_URL = process.env.LIVE_FEED_URL?.replace(/\/$/, "");
+const INGEST_TOKEN = process.env.LIVE_INGEST_TOKEN;
+async function publishRemote(feed: unknown) {
+  if (!FEED_URL) return;
+  try {
+    await fetch(`${FEED_URL}/api/live`, {
+      method: "POST",
+      headers: { "content-type": "application/json", ...(INGEST_TOKEN ? { "x-ingest-token": INGEST_TOKEN } : {}) },
+      body: JSON.stringify(feed),
+    });
+  } catch {
+    /* best effort — never block the loop on the dashboard push */
+  }
+}
+
 const state =
   (await readState()) ??
   (() => {
@@ -117,6 +134,7 @@ async function publish() {
   };
   await mkdir(dirname(LIVE_PATH), { recursive: true });
   await writeFile(LIVE_PATH, JSON.stringify(feed, null, 2) + "\n", "utf8");
+  await publishRemote(feed); // mirror to the deployed dashboard if LIVE_FEED_URL is set
 }
 
 async function readVenues(): Promise<{ price: number; fundingAnn: number } | null> {
