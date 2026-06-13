@@ -42,12 +42,6 @@ async function snapshot() {
   return { seniorNav, juniorNav, ...st };
 }
 
-async function cap() {
-  const st = await readVaultState(key);
-  const bps = await pub.readContract({ address: v.TrancheVault, abi: EXTRA, functionName: "maxSettleBps" });
-  return (st.tvl * BigInt(Number(bps))) / 10_000n;
-}
-
 // Settle, then WAIT until the public node reflects it (lastSettleTs advances) before reading —
 // the Mantle sequencer/RPC can lag a block, so naive read-after-write returns stale state and
 // would make the loop's control decisions (and the restore) inexact.
@@ -86,40 +80,47 @@ seniorStart = opening.seniorAssets;
 lastTs = opening.lastSettleTs;
 row("start", 0n, opening);
 
-// ── Loss phase: walk junior down to ~0 in steps no larger than the on-chain cap. ──
+// Local model of (senior, junior), seeded by ONE initial read. The read client uses a multi-node
+// fallback transport, so per-step reads can lag and report junior higher than it is — which would
+// make a loss step overshoot the buffer and WRONGLY breach senior. Sizing from the local model
+// (not live reads) is immune to that: every loss provably stays within the junior buffer.
+let localSenior = opening.seniorAssets;
+let localJunior = opening.juniorAssets;
+const bps = BigInt(Number(maxBps));
+const localCap = () => ((localSenior + localJunior) * bps) / 10_000n; // 20% of TVL
+const safe = (x: bigint) => (x * 98n) / 100n; // 98% margin vs the on-chain cap (coupon/rounding drift)
+
+// ── Loss phase: drain junior to ~0 in steps that never exceed the buffer (default = no breach). ──
 let lossTotal = 0n;
 for (let step = 1; step <= MAX_STEPS; step++) {
-  const st = await readVaultState(key);
-  if (st.juniorAssets <= dust()) break;
-  const c = await cap();
-  // Never exceed remaining junior (stay protective) — leave a hair so we don't tip into senior.
-  const loss = st.juniorAssets < c ? (st.juniorAssets * 9_999n) / 10_000n : c;
+  if (localJunior <= dust()) break;
+  const c = localCap();
+  // Final step (junior ≤ cap): drain to ~0 (×0.999). Otherwise take 98% of the cap.
+  const loss = localJunior <= c ? (localJunior * 999n) / 1000n : safe(c);
   if (loss <= 0n) break;
   const s = await settleStep(-loss);
+  localJunior -= loss;
   lossTotal += loss;
   row(`loss #${step}`, -loss, s, s.hash);
 }
 
-// ── Optional: push PAST the buffer so senior absorbs the remainder (destructive). ──
-if (breach) {
-  const c = await cap();
-  const st = await readVaultState(key);
-  const extra = c < parseUnits("0.05", v.decimals) ? c : parseUnits("0.05", v.decimals);
-  if (st.seniorAssets > extra) {
-    console.log("\n── BREACH: junior is wiped; the next loss is absorbed by SENIOR ──");
-    const s = await settleStep(-extra);
-    row("breach", -extra, s, s.hash);
-  }
+// ── Optional --breach: one more loss PAST the (now-empty) buffer → senior absorbs (destructive). ──
+if (breach && localSenior > dust()) {
+  const extra = localCap() < parseUnits("0.5", v.decimals) ? safe(localCap()) : parseUnits("0.5", v.decimals);
+  console.log("\n── BREACH: junior is wiped; the next loss is absorbed by SENIOR ──");
+  const s = await settleStep(-extra);
+  localSenior -= extra;
+  row("breach", -extra, s, s.hash);
 }
 
-// ── Recovery phase (default): the strategy earns back; junior NAV rebuilds, senior flat. ──
+// ── Recovery (default): rebuild junior with the exact total lost — senior untouched. ──
 if (recover && lossTotal > 0n) {
   console.log("\n── RECOVER: positive settles rebuild the junior NAV (senior unchanged) ──");
   let left = lossTotal;
   for (let step = 1; step <= MAX_STEPS && left > dust(); step++) {
-    const c = await cap();
-    const gain = left < c ? left : c;
+    const gain = left < safe(localCap()) ? left : safe(localCap());
     const s = await settleStep(gain);
+    localJunior += gain;
     left -= gain;
     row(`gain #${step}`, gain, s, s.hash);
   }
