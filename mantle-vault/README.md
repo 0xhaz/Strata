@@ -143,14 +143,14 @@ calls `settle(realizedPnl)` (lifting junior NAV, which the frontend then shows),
 
 | | mETH vault | USDY vault |
 |---|---|---|
-| **TrancheVault** | `0x7dF879Ff39AC3bAC696A38Da05aa19b51f9D1818` | `0x5BD8C01c04fbceB769B82b13d6A879a1081f75d1` |
-| asset (RWA) | `0x83130374d16D5d1d95dB1ABE38cebF3F61c88329` | `0x9d3824f42dFF56D530Bfedd849c21CCc5b7128f5` |
-| seniorToken `trSR` | `0xeDA923bA147e6CDE088399De10B2152AeB51e2c2` | `0xeDdAC58af69925A8C78c1b7C75568b3b6C7153a6` |
-| juniorToken `trJR` | `0x42935Cd68ceCff9cC6De318C3E303464B808648E` | `0xea25aC784F269b63791840ff61Cb66Eb554D3b97` |
-| DecisionLog | `0x0f64Cb12512667BBcFDE913048fA68051e632abE` | `0xE71600e749bB899E7768ddfc962B70663dF3c9E0` |
+| **TrancheVault** | `0xCd2f295B6060aa7d992d526AfA55911EEaD7e890` | `0x5BD8C01c04fbceB769B82b13d6A879a1081f75d1` |
+| asset (RWA) | `0xd5Ecc044ff8271De5DDDf2da167fab6179f9fCf2` | `0x9d3824f42dFF56D530Bfedd849c21CCc5b7128f5` |
+| seniorToken `trSR` | `0xDB829B16F984B45cEDC5EB9e19C58175D91E40C1` | `0xeDdAC58af69925A8C78c1b7C75568b3b6C7153a6` |
+| juniorToken `trJR` | `0x18791C016B56FABB124725aD8733c5faaD64281c` | `0xea25aC784F269b63791840ff61Cb66Eb554D3b97` |
+| DecisionLog | `0xB711592062498b30749A27547d8936Ec6B90f516` | `0xE71600e749bB899E7768ddfc962B70663dF3c9E0` |
 | coupon · cap | 2.87% · 20% | 4.50% · 20% |
 
-Source + ABI public on [Mantlescan](https://sepolia.mantlescan.xyz/address/0x7dF879Ff39AC3bAC696A38Da05aa19b51f9D1818#code).
+Source + ABI public on [Mantlescan](https://sepolia.mantlescan.xyz/address/0xCd2f295B6060aa7d992d526AfA55911EEaD7e890#code).
 
 ---
 

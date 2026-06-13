@@ -122,12 +122,12 @@ cd tranche-strategy && pnpm tsx scripts/breach-demo.ts --vault mETH
 
 | | mETH vault | USDY vault |
 |---|---|---|
-| **TrancheVault** | `0x7dF879Ff39AC3bAC696A38Da05aa19b51f9D1818` | `0x5BD8C01c04fbceB769B82b13d6A879a1081f75d1` |
-| asset (RWA) | `0x83130374d16D5d1d95dB1ABE38cebF3F61c88329` | `0x9d3824f42dFF56D530Bfedd849c21CCc5b7128f5` |
-| DecisionLog | `0x0f64Cb12512667BBcFDE913048fA68051e632abE` | `0xE71600e749bB899E7768ddfc962B70663dF3c9E0` |
+| **TrancheVault** | `0xCd2f295B6060aa7d992d526AfA55911EEaD7e890` | `0x5BD8C01c04fbceB769B82b13d6A879a1081f75d1` |
+| asset (RWA) | `0xd5Ecc044ff8271De5DDDf2da167fab6179f9fCf2` | `0x9d3824f42dFF56D530Bfedd849c21CCc5b7128f5` |
+| DecisionLog | `0xB711592062498b30749A27547d8936Ec6B90f516` | `0xE71600e749bB899E7768ddfc962B70663dF3c9E0` |
 
 All contracts are **verified** (source + ABI public) on Mantlescan:
-<https://sepolia.mantlescan.xyz/address/0x7dF879Ff39AC3bAC696A38Da05aa19b51f9D1818#code>
+<https://sepolia.mantlescan.xyz/address/0xCd2f295B6060aa7d992d526AfA55911EEaD7e890#code>
 
 ### Trust-minimization (settlement safety)
 The vault is the settlement layer for an off-chain AI agent, so it bounds what that agent can do:

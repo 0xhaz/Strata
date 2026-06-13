@@ -12,11 +12,11 @@
       "maxSettleBps": 2000,
       "settler": "0x0E128580d848fB51849ab6564467A9BA79B4820c",
       "strategy": "Delta-neutral mETH — earn the staking yield, hedge the ETH price on Hyperliquid (Ethena-style).",
-      "TrancheVault": "0x7dF879Ff39AC3bAC696A38Da05aa19b51f9D1818",
-      "asset": "0x83130374d16D5d1d95dB1ABE38cebF3F61c88329",
-      "DecisionLog": "0x0f64Cb12512667BBcFDE913048fA68051e632abE",
-      "seniorToken": "0xeDA923bA147e6CDE088399De10B2152AeB51e2c2",
-      "juniorToken": "0x42935Cd68ceCff9cC6De318C3E303464B808648E"
+      "TrancheVault": "0xCd2f295B6060aa7d992d526AfA55911EEaD7e890",
+      "asset": "0xd5Ecc044ff8271De5DDDf2da167fab6179f9fCf2",
+      "DecisionLog": "0xB711592062498b30749A27547d8936Ec6B90f516",
+      "seniorToken": "0xDB829B16F984B45cEDC5EB9e19C58175D91E40C1",
+      "juniorToken": "0x18791C016B56FABB124725aD8733c5faaD64281c"
     },
     "USDY": {
       "symbol": "USDY",
