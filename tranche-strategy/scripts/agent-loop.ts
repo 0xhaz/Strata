@@ -46,7 +46,9 @@ try {
   const env = readFileSync(new URL("../.env", import.meta.url), "utf8");
   for (const line of env.split("\n")) {
     const m = line.match(/^\s*([A-Za-z_][A-Za-z0-9_]*)\s*=\s*(.*?)\s*$/);
-    if (m && !process.env[m[1]]) process.env[m[1]] = m[2].replace(/^["']|["']$/g, "");
+    if (!m) continue;
+    const key = m[1]!;
+    if (!process.env[key]) process.env[key] = (m[2] ?? "").replace(/^["']|["']$/g, "");
   }
 } catch { /* no .env — use the real environment */ }
 
